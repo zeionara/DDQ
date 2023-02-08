@@ -70,11 +70,11 @@ class RuleSimulator(UserSimulator):
     def _sample_action(self):
         """ randomly sample a start action based on user goal """
         
-        self.state['diaact'] = random.choice(dialog_config.start_dia_acts.keys())
+        self.state['diaact'] = random.choice(list(dialog_config.start_dia_acts.keys()))
         
         # "sample" informed slots
         if len(self.goal['inform_slots']) > 0:
-            known_slot = random.choice(self.goal['inform_slots'].keys())
+            known_slot = random.choice(list(self.goal['inform_slots'].keys()))
             self.state['inform_slots'][known_slot] = self.goal['inform_slots'][known_slot]
 
             if 'moviename' in self.goal['inform_slots'].keys(): # 'moviename' must appear in the first user turn
@@ -134,20 +134,20 @@ class RuleSimulator(UserSimulator):
                         if slot in self.movie_dict.keys(): user_action['inform_slots'][slot] = random.choice(self.movie_dict[slot])
                     elif slot_err_random > 0.33 and slot_err_random <= 0.66:
                         del user_action['inform_slots'][slot]
-                        random_slot = random.choice(self.movie_dict.keys())
+                        random_slot = random.choice(list(self.movie_dict.keys()))
                         user_action[random_slot] = random.choice(self.movie_dict[random_slot])
                     else:
                         del user_action['inform_slots'][slot]
                 elif self.slot_err_mode == 2: #replace slot and its values
                     del user_action['inform_slots'][slot]
-                    random_slot = random.choice(self.movie_dict.keys())
+                    random_slot = random.choice(list(self.movie_dict.keys()))
                     user_action[random_slot] = random.choice(self.movie_dict[random_slot])
                 elif self.slot_err_mode == 3: # delete the slot
                     del user_action['inform_slots'][slot]
                     
         intent_err_sample = random.random()
         if intent_err_sample < self.intent_err_probability: # add noise for intent level
-            user_action['diaact'] = random.choice(self.act_set.keys())
+            user_action['diaact'] = random.choice(list(self.act_set.keys()))
     
     def debug_falk_goal(self):
         """ Debug function: build a fake goal mannually (Can be moved in future) """
@@ -246,7 +246,7 @@ class RuleSimulator(UserSimulator):
         self.episode_over = True
         self.dialog_status = dialog_config.SUCCESS_DIALOG
 
-        request_slot_set = copy.deepcopy(self.state['request_slots'].keys())
+        request_slot_set = copy.deepcopy(list(self.state['request_slots'].keys()))
         if 'ticket' in request_slot_set:
             request_slot_set.remove('ticket')
         rest_slot_set = copy.deepcopy(self.state['rest_slots'])
@@ -274,7 +274,7 @@ class RuleSimulator(UserSimulator):
         """ Response for Request (System Action) """
         
         if len(system_action['request_slots'].keys()) > 0:
-            slot = system_action['request_slots'].keys()[0] # only one slot
+            slot = list(system_action['request_slots'].keys())[0] # only one slot
             if slot in self.goal['inform_slots'].keys(): # request slot in user's constraints  #and slot not in self.state['request_slots'].keys():
                 self.state['inform_slots'][slot] = self.goal['inform_slots'][slot]
                 self.state['diaact'] = "inform"

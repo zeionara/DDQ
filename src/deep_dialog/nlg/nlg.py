@@ -7,7 +7,7 @@ Created on Oct 17, 2016
 @author: xiul
 '''
 
-import cPickle as pickle
+import pickle
 import copy, argparse, json
 import numpy as np
 
@@ -56,13 +56,13 @@ class nlg:
         # remove I do not care slot in task(complete)
         if dia_act['diaact'] == 'inform' and 'taskcomplete' in dia_act['inform_slots'].keys() and dia_act['inform_slots']['taskcomplete'] != dialog_config.NO_VALUE_MATCH:
             inform_slot_set = dia_act['inform_slots'].keys()
-            for slot in inform_slot_set:
+            for slot in [item for item in inform_slot_set]:
                 if dia_act['inform_slots'][slot] == dialog_config.I_DO_NOT_CARE: del dia_act['inform_slots'][slot]
         
         if dia_act['diaact'] in self.diaact_nl_pairs['dia_acts'].keys():
             for ele in self.diaact_nl_pairs['dia_acts'][dia_act['diaact']]:
                 if set(ele['inform_slots']) == set(dia_act['inform_slots'].keys()) and set(ele['request_slots']) == set(dia_act['request_slots'].keys()):
-                    sentence = self.diaact_to_nl_slot_filling(dia_act, ele['nl'][turn_msg])
+                    sentence = self.diaact_to_nl_slot_filling(dia_act, ele['nl'][turn_msg].decode())
                     boolean_in = True
                     break
         
@@ -135,7 +135,8 @@ class nlg:
     def load_nlg_model(self, model_path):
         """ load the trained NLG model """
         
-        model_params = pickle.load(open(model_path))
+        print(f'Loading model from {model_path}')
+        model_params = pickle.load(open(model_path, 'rb'), encoding = 'latin1')
     
         hidden_size = model_params['model']['Wd'].shape[0]
         output_size = model_params['model']['Wd'].shape[1]
@@ -172,6 +173,7 @@ class nlg:
                 sentence = sentence.replace('$'+slot+'$', '', 1)
                 continue
             
+            # print(decoded_sentence := sentence.decode(), slot, slot_val)
             sentence = sentence.replace('$'+slot+'$', slot_val, 1)
         
         if counter > 0 and counter == len(dia_act['inform_slots']):

@@ -7,8 +7,8 @@ This should be a simple minimalist run file. It's only responsibility should be 
 """
 
 import argparse, json, copy, os
-import cPickle as pickle
-import cPickle
+import pickle
+# import cPickle
 
 from deep_dialog.dialog_system import DialogManager, text_to_dict
 from deep_dialog.agents import AgentCmd, InformAgent, RequestAllAgent, RandomAgent, EchoAgent, RequestBasicsAgent, AgentDQN
@@ -132,8 +132,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     params = vars(args)
 
-    print 'Dialog Parameters: '
-    print json.dumps(params, indent=2)
+    print('Dialog Parameters: ')
+    print(json.dumps(params, indent=2))
 
 max_turn = params['max_turn']
 num_episodes = params['episodes']
@@ -145,7 +145,15 @@ dict_path = params['dict_path']
 goal_file_path = params['goal_file_path']
 
 # load the user goals from .p file
+print(f'Unpickling file {goal_file_path=}')
 all_goal_set = pickle.load(open(goal_file_path, 'rb'))
+
+print(len(all_goal_set))
+
+print(all_goal_set[0])
+
+# for item in all_goal_set:
+#     print(item)
 
 # split goal set
 split_fold = params.get('split_fold', 5)
@@ -159,7 +167,13 @@ for u_goal_id, u_goal in enumerate(all_goal_set):
 # end split goal set
 
 movie_kb_path = params['movie_kb_path']
-movie_kb = pickle.load(open(movie_kb_path, 'rb'))
+
+print(f'Unpickling file {movie_kb_path=}')
+with open(movie_kb_path, 'rb') as file:
+    movie_kb = pickle.load(file, encoding = 'latin1')
+
+print(len(movie_kb))
+print(movie_kb[0])
 
 act_set = text_to_dict(params['act_set'])
 slot_set = text_to_dict(params['slot_set'])
@@ -167,7 +181,10 @@ slot_set = text_to_dict(params['slot_set'])
 ################################################################################
 # a movie dictionary for user simulator - slot:possible values
 ################################################################################
+print(f'Unpickling file {dict_path=}')
 movie_dictionary = pickle.load(open(dict_path, 'rb'))
+
+print(tuple(movie_dictionary.keys()))
 
 dialog_config.run_mode = params['run_mode']
 dialog_config.auto_suggest = params['auto_suggest']
@@ -305,11 +322,13 @@ def save_model(path, agt, success_rate, agent, best_epoch, cur_epoch):
     filename = 'agt_%s_%s_%s_%.5f.pkl' % (agt, best_epoch, cur_epoch, success_rate)
     filepath = os.path.join(path, filename)
     try:
+        print(filepath)
         agent.save(filepath)
-        print 'saved model in %s' % (filepath,)
-    except Exception, e:
-        print 'Error: Writing model fails: %s' % (filepath,)
-        print e
+        print('saved model in %s' % (filepath,))
+    except Exception as e:
+        print('Error: Writing model fails: %s' % (filepath,))
+        print(e)
+        raise
 
 
 """ save performance numbers """
@@ -319,11 +338,13 @@ def save_performance_records(path, agt, records):
     filename = 'agt_%s_performance_records.json' % (agt)
     filepath = os.path.join(path, filename)
     try:
-        json.dump(records, open(filepath, "wb"))
-        print 'saved model in %s' % (filepath,)
-    except Exception, e:
-        print 'Error: Writing model fails: %s' % (filepath,)
-        print e
+        print(records, filepath)
+        json.dump(records, open(filepath, "w"))
+        print('saved model in %s' % (filepath,))
+    except Exception as e:
+        print('Error: Writing model fails: %s' % (filepath,))
+        print(e)
+        raise
 
 
 """ Run N simulation Dialogues """
@@ -335,7 +356,7 @@ def simulation_epoch(simulation_epoch_size):
     cumulative_turns = 0
 
     res = {}
-    for episode in xrange(simulation_epoch_size):
+    for episode in range(simulation_epoch_size):
         dialog_manager.initialize_episode(use_environment=True)
         episode_over = False
         while (not episode_over):
@@ -363,7 +384,7 @@ def simulation_epoch_for_training(simulation_epoch_size, grounded_for_model=Fals
     cumulative_turns = 0
 
     res = {}
-    for episode in xrange(simulation_epoch_size):
+    for episode in range(simulation_epoch_size):
 
         if episode % simulation_epoch_size == 0:
             use_environment = True
@@ -402,7 +423,7 @@ def warm_start_simulation():
 
     res = {}
     warm_start_run_epochs = 0
-    for episode in xrange(warm_start_epochs):
+    for episode in range(warm_start_epochs):
         dialog_manager.initialize_episode(use_environment=True)
         episode_over = False
         while (not episode_over):
@@ -459,7 +480,7 @@ def run_episodes(count, status):
         warm_start_simulation()
         print ('warm_start finished, start RL training ...')
 
-    for episode in xrange(count):
+    for episode in range(count):
 
         print ("Episode: %s" % (episode))
         agent.predict_mode = False

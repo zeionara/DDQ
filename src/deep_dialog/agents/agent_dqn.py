@@ -9,13 +9,13 @@ Some methods are not consistent with super class Agent.
 '''
 
 import random, copy, json
-import cPickle as pickle
+import pickle
 import numpy as np
 from collections import namedtuple, deque
 
 from deep_dialog import dialog_config
 
-from agent import Agent
+from .agent import Agent
 from deep_dialog.qlearning import DQN
 
 import torch
@@ -67,7 +67,7 @@ class AgentDQN(Agent):
         self.cur_bellman_err = 0
 
         # Prediction Mode: load trained DQN model
-        if params['trained_model_path'] != None:
+        if params['trained_model_path'] is not None:
             self.load(params['trained_model_path'])
             self.predict_mode = True
             self.warm_start = 2
@@ -96,7 +96,7 @@ class AgentDQN(Agent):
 
         user_action = state['user_action']
         current_slots = state['current_slots']
-        kb_results_dict = state['kb_results_dict']
+        # kb_results_dict = state['kb_results_dict']
         agent_last = state['agent_action']
 
         ########################################################################
@@ -234,7 +234,7 @@ class AgentDQN(Agent):
         for (i, action) in enumerate(self.feasible_actions):
             if act_slot_response == action:
                 return i
-        print act_slot_response
+        print(act_slot_response)
         raise Exception("action index not found")
         return None
 
@@ -248,7 +248,7 @@ class AgentDQN(Agent):
         st_user = self.prepare_state_representation(s_tplus1)
         training_example = (state_t_rep, action_t, reward_t, state_tplus1_rep, episode_over, st_user)
 
-        if self.predict_mode == False:  # Training Mode
+        if not self.predict_mode:  # Training Mode
             if self.warm_start == 1:
                 self.experience_replay_pool.append(training_example)
         else:  # Prediction Mode
@@ -261,11 +261,11 @@ class AgentDQN(Agent):
         """Sample batch size examples from experience buffer and convert it to torch readable format"""
         # type: (int, ) -> Transition
 
-        batch = [random.choice(self.running_expereince_pool) for i in xrange(batch_size)]
+        batch = [random.choice(self.running_expereince_pool) for i in range(batch_size)]
         np_batch = []
         for x in range(len(Transition._fields)):
             v = []
-            for i in xrange(batch_size):
+            for i in range(batch_size):
                 v.append(batch[i][x])
             np_batch.append(np.vstack(v))
 
@@ -279,7 +279,7 @@ class AgentDQN(Agent):
         self.running_expereince_pool = list(self.experience_replay_pool) + list(self.experience_replay_pool_from_model)
 
         for iter_batch in range(num_batches):
-            for iter in range(len(self.running_expereince_pool) / (batch_size)):
+            for iter in range(int(len(self.running_expereince_pool) / (batch_size))):
                 self.optimizer.zero_grad()
                 batch = self.sample_from_buffer(batch_size)
 
@@ -296,7 +296,7 @@ class AgentDQN(Agent):
                 self.cur_bellman_err += loss.item()
 
             if len(self.experience_replay_pool) != 0:
-                print (
+                print(
                     "cur bellman err %.4f, experience replay pool %s, model replay pool %s, cur bellman err for planning %.4f" % (
                         float(self.cur_bellman_err) / (len(self.experience_replay_pool) / (float(batch_size))),
                         len(self.experience_replay_pool), len(self.experience_replay_pool_from_model),
@@ -356,10 +356,10 @@ class AgentDQN(Agent):
 
         try:
             pickle.dump(self.experience_replay_pool, open(path, "wb"))
-            print 'saved model in %s' % (path,)
-        except Exception, e:
-            print 'Error: Writing model fails: %s' % (path,)
-            print e
+            print('saved model in %s' % (path,))
+        except Exception as e:
+            print('Error: Writing model fails: %s' % (path,))
+            print(e)
 
     def load_experience_replay_from_file(self, path):
         """ Load the experience replay pool from a file"""
@@ -371,7 +371,7 @@ class AgentDQN(Agent):
 
         trained_file = pickle.load(open(path, 'rb'))
         model = trained_file['model']
-        print "Trained DQN Parameters:", json.dumps(trained_file['params'], indent=2)
+        print("Trained DQN Parameters:", json.dumps(trained_file['params'], indent=2))
         return model
 
     def set_user_planning(self, user_planning):
