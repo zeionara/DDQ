@@ -146,6 +146,12 @@ Before running training create the required folders:
 mkdir -p src/deep_dialog/checkpoints/DDQAgent
 ```
 
+If you run the system on linux you will also need to convert pickle files from dos format (by replacing `CRLF` with `LF`):
+
+```sh
+./dos2unix.sh
+```
+
 Then training can be started through `src/run.sh` script:
 
 ```sh
