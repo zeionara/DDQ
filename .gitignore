@@ -1,3 +1,5 @@
 __pycache__/
-**/checkpoints/DDQAgent/*
 .mypy_cache/
+assets/agents
+**/*.unix.pkl
+**/checkpoints/DDQAgent/*

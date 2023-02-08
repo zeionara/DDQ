@@ -13,7 +13,7 @@ a rule-based user simulator
 from .usersim import UserSimulator
 import argparse, json, random, copy
 
-from deep_dialog import dialog_config
+from ...deep_dialog import dialog_config
 
 
 

@@ -7,27 +7,26 @@ This should be a simple minimalist run file. It's only responsibility should be 
 """
 
 import argparse, json, copy, os
+import random
 import pickle
-# import cPickle
-
-from deep_dialog.dialog_system import DialogManager, text_to_dict
-from deep_dialog.agents import AgentCmd, InformAgent, RequestAllAgent, RandomAgent, EchoAgent, RequestBasicsAgent, AgentDQN
-from deep_dialog.usersims import RuleSimulator, ModelBasedSimulator
-
-from deep_dialog import dialog_config
-from deep_dialog.dialog_config import *
-
-from deep_dialog.nlu import nlu
-from deep_dialog.nlg import nlg
 
 import numpy
-import random
+import torch
+
+from .deep_dialog.dialog_system import DialogManager, text_to_dict
+from .deep_dialog.agents import AgentCmd, InformAgent, RequestAllAgent, RandomAgent, EchoAgent, RequestBasicsAgent, AgentDQN
+from .deep_dialog.usersims import RuleSimulator, ModelBasedSimulator
+
+from .deep_dialog import dialog_config
+from .deep_dialog.dialog_config import *
+
+from .deep_dialog.nlu import nlu
+from .deep_dialog.nlg import nlg
 
 seed = 5
 numpy.random.seed(seed)
 random.seed(seed)
 
-import torch
 
 """ 
 Launch a dialog simulation per the command line arguments
@@ -474,6 +473,8 @@ def run_episodes(count, status):
 
     grounded_for_model = params['grounded']
     simulation_epoch_size = planning_steps + 1
+
+    os.makedirs(params['write_model_dir'], exist_ok = True)
 
     if agt == 9 and params['trained_model_path'] == None and warm_start == 1:
         print ('warm_start starting ...')

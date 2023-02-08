@@ -6,7 +6,7 @@ Created on May 18, 2016
 
 import copy
 from collections import defaultdict
-from deep_dialog import dialog_config
+from ...deep_dialog import dialog_config
 
 class KBHelper:
     """ An assistant to fill in values for the agent (which knows about slots of values) """

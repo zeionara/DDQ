@@ -11,8 +11,8 @@ import pickle
 import copy, argparse, json
 import numpy as np
 
-from deep_dialog import dialog_config
-from deep_dialog.nlg.lstm_decoder_tanh import lstm_decoder_tanh
+from ...deep_dialog import dialog_config
+from ...deep_dialog.nlg.lstm_decoder_tanh import lstm_decoder_tanh
 
 
 class nlg:

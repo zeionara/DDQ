@@ -13,10 +13,10 @@ import pickle
 import numpy as np
 from collections import namedtuple, deque
 
-from deep_dialog import dialog_config
+from ...deep_dialog import dialog_config
+from ...deep_dialog.qlearning import DQN
 
 from .agent import Agent
-from deep_dialog.qlearning import DQN
 
 import torch
 import torch.optim as optim
