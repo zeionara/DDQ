@@ -5,7 +5,7 @@ Created on May 17, 2016
 """
 
 import json
-from . import StateTracker
+from .state_tracker import StateTracker
 from ...deep_dialog import dialog_config
 import copy
 
@@ -47,14 +47,17 @@ class DialogManager:
 
         self.user_action = self.running_user.initialize_episode()
 
+        # print(f'Sampled start user action: {self.user_action}')
+
         if use_environment:
             self.world_model.sample_goal = self.user.sample_goal
 
         self.state_tracker.update(user_action=self.user_action)
 
-        if dialog_config.run_mode < 3:
-            print ("New episode, user goal:")
-            print(json.dumps(self.user.goal, indent=2))
+        # if dialog_config.run_mode < 3:
+        #     print ("New episode, user goal:")
+        #     print(json.dumps(self.user.goal, indent=2))
+
         self.print_function(user_action=self.user_action)
 
         self.agent.initialize_episode()

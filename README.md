@@ -42,17 +42,18 @@ The former contains 991 items, for example:
 The latter contains 128 items, for example:
 
 ```python
-{
-    'request_slots': {},
-    'diaact': 'request',
-    'inform_slots': {
-        'city': 'seattle',
-        'numberofpeople': '2',
-        'theater': 'amc pacific place 11 theater',
-        'starttime': '9:00 pm',
-        'date': 'tomorrow',
-        'moviename': 'deadpool'
-    }
+{                                                                                                                                         
+  "request_slots": {
+    "starttime": "UNK",
+    "ticket": "UNK"
+  },
+  "diaact": "request",
+  "inform_slots": {
+    "date": "tomorrow",
+    "moviename": "risen",
+    "numberofpeople": "2",
+    "theater": "regency commerce 14"
+  }
 }
 ```
 
@@ -289,3 +290,5 @@ The main module works according to the activity diagram:
 Warmup activity diagram:
 
 [![](https://mermaid.ink/img/pako:eNp9U81uwyAMfhXEcWovO-aww9Q32G5jQl5wU1QwkSHpqqrvPkKTNV3TcQr-_pzYOck6GJSVjAkSbiw0DH7dPysylrFONpB4f1WkqHYQ4wa3og7cdlHExGGPVcOIc7QPNXx1Dvg4MRjNDPc5zk1Qb4PDNLh_PH2K9fpFWLJJY2tjpima3wp82FmH2gdGnTqmOEhL5zdCcVIk8ong20xvAriiHu9ZwElDeTlF56vHX_fJh_A7lcpALcaF_lueeMMJhHoXcis0fFjdRWR9oc86gAbp2sEkXQCLiLGxMWWfZdkiPE8rPTwIm2G3WYuiJXSU5a0wOjFY0gYS6G0YG5qrH5L-MRmiLh7ncVh3YxrEF9UhsDO67Jiiu1Ih5k2TK-mRPViTF7_MTsm0Q49KVvnRAO-VzGGZB10Kb0eqZbUFF3Elu9Zcf5Sxev4BirYuOw?type=png)](https://mermaid.live/edit#pako:eNp9U81uwyAMfhXEcWovO-aww9Q32G5jQl5wU1QwkSHpqqrvPkKTNV3TcQr-_pzYOck6GJSVjAkSbiw0DH7dPysylrFONpB4f1WkqHYQ4wa3og7cdlHExGGPVcOIc7QPNXx1Dvg4MRjNDPc5zk1Qb4PDNLh_PH2K9fpFWLJJY2tjpima3wp82FmH2gdGnTqmOEhL5zdCcVIk8ong20xvAriiHu9ZwElDeTlF56vHX_fJh_A7lcpALcaF_lueeMMJhHoXcis0fFjdRWR9oc86gAbp2sEkXQCLiLGxMWWfZdkiPE8rPTwIm2G3WYuiJXSU5a0wOjFY0gYS6G0YG5qrH5L-MRmiLh7ncVh3YxrEF9UhsDO67Jiiu1Ih5k2TK-mRPViTF7_MTsm0Q49KVvnRAO-VzGGZB10Kb0eqZbUFF3Elu9Zcf5Sxev4BirYuOw)
+
+More [notes here](Notes.md).

@@ -25,7 +25,8 @@ class SimulatorModel(nn.Module):
     def forward(self, s, a):
         h_s = self.linear_i2h(s)
         h_a = self.agent_emb(a).squeeze(1)
-        h = F.tanh(h_s + h_a)
+        # h = F.tanh(h_s + h_a)
+        h = torch.tanh(h_s + h_a)
 
         reward = self.linear_h2r(h)
         term = self.linear_h2t(h)

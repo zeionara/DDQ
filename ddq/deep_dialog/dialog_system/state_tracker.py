@@ -6,7 +6,7 @@ state tracker
 @author: xiul, t-zalipt
 """
 
-from . import KBHelper
+from .kb_helper import KBHelper
 import numpy as np
 import copy
 

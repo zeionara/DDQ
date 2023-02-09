@@ -479,7 +479,7 @@ def run_episodes(count, status):
         os.makedirs(params['write_model_dir'], exist_ok = True)
 
     if agt == 9 and params['trained_model_path'] == None and warm_start == 1:
-        print ('warm_start starting ...')
+        # print('warm_start starting ...')
         warm_start_simulation()
         print ('warm_start finished, start RL training ...')
         # return

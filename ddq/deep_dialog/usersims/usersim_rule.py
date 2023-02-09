@@ -262,7 +262,7 @@ class RuleSimulator(UserSimulator):
             if info_slot in self.goal['inform_slots'].keys():
                 if self.state['history_slots'][info_slot] != self.goal['inform_slots'][info_slot]:
                     self.dialog_status = dialog_config.FAILED_DIALOG
-
+        
         if 'ticket' in system_action['inform_slots'].keys():
             if system_action['inform_slots']['ticket'] == dialog_config.NO_VALUE_MATCH:
                 self.dialog_status = dialog_config.FAILED_DIALOG
