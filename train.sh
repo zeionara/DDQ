@@ -8,6 +8,7 @@ python -m ddq \
     --usr 1 \
     \
     --episodes 10 \
+    --warm_start_epochs 100 \
     --max_turn 40 \
     --simulation_epoch_size 10 \
     \
@@ -29,7 +30,6 @@ python -m ddq \
     --slot_err_prob 0.0 \
     --intent_err_prob 0.00 \
     --warm_start 1 \
-    --warm_start_epochs 100 \
     --planning_steps 10 \
     \
     --torch_seed 100 \

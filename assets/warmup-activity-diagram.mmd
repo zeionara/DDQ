@@ -1,0 +1,29 @@
+stateDiagram-v2
+direction TB
+
+classDef corpus stroke:green
+classDef vocabulary stroke:red
+classDef model stroke:violet
+
+[*] --> init_episode
+init_episode --> while_more_turns
+
+state init_episode {
+    sample_goal --> sample_start_action
+}
+
+state while_more_turns {
+    next_turn
+
+    state next_turn {
+        one_hot_encode_user_state --> sample_agent_action
+        sample_agent_action --> register_agent_action
+        register_agent_action --> sample_user_action
+        sample_user_action --> register_user_action
+        register_user_action --> record_train_data_for_agent
+        record_train_data_for_agent --> record_train_data_for_user
+    }
+}
+
+while_more_turns --> train_world_model
+train_world_model --> [*]

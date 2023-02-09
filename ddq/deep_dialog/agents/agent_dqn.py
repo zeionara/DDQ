@@ -184,6 +184,7 @@ class AgentDQN(Agent):
         self.final_representation = np.hstack(
             [user_act_rep, user_inform_slots_rep, user_request_slots_rep, agent_act_rep, agent_inform_slots_rep,
              agent_request_slots_rep, current_slots_rep, turn_rep, turn_onehot_rep, kb_binary_rep, kb_count_rep])
+
         return self.final_representation
 
     def run_policy(self, representation):

@@ -164,7 +164,7 @@ class DialogManager:
             if dialog_config.run_mode == 0:
                 print ("Turn %d usr: %s" % (user_action['turn'], user_action['nl']))
             elif dialog_config.run_mode == 1:
-                print('===', user_action)
+                # print('===', user_action)
                 print ("Turn %s usr: %s, inform_slots: %s, request_slots: %s" % (
                     user_action.get('turn'), user_action['diaact'], user_action['inform_slots'],
                     user_action['request_slots']))

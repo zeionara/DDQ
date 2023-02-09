@@ -482,6 +482,7 @@ def run_episodes(count, status):
         print ('warm_start starting ...')
         warm_start_simulation()
         print ('warm_start finished, start RL training ...')
+        # return
 
     for episode in range(count):
 
