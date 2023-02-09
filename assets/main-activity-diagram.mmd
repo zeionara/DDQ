@@ -1,0 +1,95 @@
+stateDiagram-v2
+direction TB
+
+split_goals: split 1 / 4
+diaact_nl_pairs: dialogue act nl pairs
+
+classDef corpus stroke:green
+classDef vocabulary stroke:red
+classDef model stroke:violet
+
+[*] --> goals:::corpus
+[*] --> movies:::corpus
+[*] --> acts:::vocabulary
+[*] --> slots:::vocabulary
+[*] --> vocabulary:::vocabulary
+[*] --> set_seed
+[*] --> nlu:::model
+[*] --> nlg:::model
+[*] --> diaact_nl_pairs
+
+goals -->  split_goals
+
+movies --> init_agent
+acts --> init_agent
+slots --> init_agent
+set_seed --> init_agent
+
+vocabulary --> init_user
+acts --> init_user
+slots --> init_user
+split_goals --> init_user
+
+vocabulary --> init_world_model
+acts --> init_world_model
+slots --> init_world_model
+split_goals --> init_world_model
+
+nlg --> init_nlg
+diaact_nl_pairs --> init_nlg
+
+nlu --> init_nlu
+
+init_nlg --> init_agent
+init_nlg --> init_user
+init_nlg --> init_world_model
+
+init_nlu --> init_agent
+init_nlu --> init_user
+init_nlu --> init_world_model
+
+init_agent --> init_dialog_manager
+init_user --> init_dialog_manager
+init_world_model --> init_dialog_manager
+
+acts --> init_dialog_manager
+slots --> init_dialog_manager
+movies --> init_dialog_manager
+
+init_dialog_manager --> run_episodes
+
+state if_agent <<choice>>
+state if_agent_2 <<choice>>
+state if_world_model <<choice>>
+
+state run_episodes {
+    if_agent --> warm_start_simulation: if dqn agent
+    if_agent --> for_each_episode
+
+    warm_start_simulation --> for_each_episode
+
+    state for_each_episode {
+        dialog_manager.initialize_epizode --> while_more_turns
+        
+        state while_more_turns {
+            dialog_manager.next_turn
+        }
+
+        while_more_turns --> if_agent_2
+
+        if_agent_2 --> turn_on_prediction_mode: if dqn agent
+        turn_on_prediction_mode --> simulation_epoch_for_training
+        simulation_epoch_for_training --> turn_off_prediction_mode
+        turn_off_prediction_mode --> run_simulation
+        run_simulation --> update_prediction_records
+
+        update_prediction_records --> train_agent
+        train_agent --> if_world_model
+        if_world_model --> train_world_model: if should train world model
+
+        train_world_model --> save_model
+        train_agent --> save_model
+
+        save_model --> save_preformance_records
+    }
+}
