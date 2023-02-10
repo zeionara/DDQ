@@ -25,7 +25,7 @@ python -m ddq \
     --dqn_hidden_size 80 \
     --batch_size 16 \
     --experience_replay_pool_size 5000 \
-    --run_mode 3 \
+    --run_mode 1 \
     --act_level 0 \
     --slot_err_prob 0.0 \
     --intent_err_prob 0.00 \

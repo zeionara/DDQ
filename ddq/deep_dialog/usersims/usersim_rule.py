@@ -108,6 +108,8 @@ class RuleSimulator(UserSimulator):
         sample_action['turn'] = self.state['turn']
         
         self.add_nl_to_action(sample_action)
+        # print(sample_action)
+        # dd
         return sample_action
     
     def _sample_goal(self, goal_set):

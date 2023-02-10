@@ -186,6 +186,18 @@ slot_set = text_to_dict(params['slot_set'])
 ################################################################################
 # print(f'Unpickling file {dict_path=}')
 movie_dictionary = pickle.load(open(dict_path, 'rb'))
+# print(movie_dictionary)
+
+# n_total_values = 0
+# print(len(tuple(movie_dictionary.keys())))
+# 
+# for key in sorted(movie_dictionary.keys()):
+#     n_values = len(items := movie_dictionary[key])
+#     print(f'1. {key}: {n_values} possible values (for example: `{items[0]}` or `{items[1]}`)')
+#     n_total_values += n_values
+# 
+# print(n_total_values)
+
 
 # print(tuple(movie_dictionary.keys()))
 
